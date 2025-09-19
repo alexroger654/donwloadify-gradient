@@ -439,7 +439,22 @@ export default function App() {
                   <Download className="w-8 h-8 text-white" />
                 </motion.div>
                 <div>
-                  <span className="text-4xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  {/* <motion.span
+                    className="bg-gradient-to-r text-4xl  font-bold from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent block mt-2"
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{ duration: 5, repeat: Infinity }}
+                    style={{ backgroundSize: "200% 200%" }}
+                  >
+                    Downloadify
+                  </motion.span> */}
+                  {/* <span className="text-4xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+
+                    Downloadify
+                  </span> */}
+                  <span className="text-4xl font-bold text-white">
+
                     Downloadify
                   </span>
                   <div className="flex items-center space-x-2 mt-1">
@@ -517,7 +532,7 @@ export default function App() {
             className="mb-16"
           >
             <div className="flex items-center justify-center space-x-3 mb-10">
-              <h3 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+              <h3 className="text-3xl font-bold text-white">
                 Choose Your Platform
               </h3>
               <motion.div
@@ -1031,7 +1046,7 @@ export default function App() {
                 <Download className="w-8 h-8 text-white" />
               </motion.div>
               <div>
-                <span className="text-4xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <span className="text-4xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                   Downloadify
                 </span>
                 <div className="flex items-center justify-center space-x-2 mt-1">
