@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Download,
@@ -146,7 +146,7 @@ const platforms = [
     hoverGlow: 'hover:shadow-sky-400/50',
     pageGradient: 'from-slate-900 via-blue-700 to-sky-400',
     users: '450M',
-    description: 'What\'s happening'
+    description: 'What  happening'
   },
   {
     name: 'LinkedIn',
@@ -163,15 +163,16 @@ const platforms = [
   {
     name: 'TikTok',
     icon: Music,
-    gradient: 'from-fuchsia-500 via-cyan-400 to-rose-500',
-    bgGradient: 'from-fuchsia-500/20 via-cyan-400/20 to-rose-500/20',
+    gradient: 'from-black via-fuchsia-500 to-cyan-400',
+    bgGradient: 'from-black/80 via-fuchsia-500/20 to-cyan-400/20',
     borderColor: 'border-fuchsia-500',
     textColor: 'text-fuchsia-400',
     hoverGlow: 'hover:shadow-fuchsia-500/50',
-    pageGradient: 'from-black via-cyan-500 to-rose-500',
+    pageGradient: 'from-black via-zinc-900 to-black',
     users: '1.7B',
-    description: 'For you page'
+    description: 'For you page',
   },
+
   {
     name: 'YouTube',
     icon: Youtube,
@@ -601,7 +602,7 @@ export default function App() {
                         type="url"
                         placeholder={`Paste your ${selectedPlatform} video URL here...`}
                         value={url}
-                        onChange={(e) => setUrl(e.target.value)}
+                        onChange={(e: any) => setUrl(e.target.value)}
                         className="bg-white/10 border-white/20 text-white placeholder-white/70 text-lg h-14 rounded-2xl focus:ring-2 focus:ring-transparent focus:border-transparent transition-all duration-300 "
                       />
                     </div>
@@ -1056,7 +1057,7 @@ export default function App() {
               </div>
             </div>
             <p className=" mb-6 text-lg">
-              The world's most advanced video downloading platform
+              The worlds most advanced video downloading platform
             </p>
             <div className="flex items-center justify-center space-x-8 text-sm ">
               <div className="flex items-center space-x-2">
