@@ -355,12 +355,7 @@ export default function ProxyManager() {
                             <Plus className="w-4 h-4" />
                             Add Proxy
                         </button>
-                        <button
-                            onClick={() => signOut({ callbackUrl: '/' })} // redirect after logout
-                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2 transition-all shadow-md hover:shadow-lg"
-                        >
-                            Logout
-                        </button>
+                 
                     </div>
                 </div>
 
