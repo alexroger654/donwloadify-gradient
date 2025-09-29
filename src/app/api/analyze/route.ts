@@ -1,38 +1,41 @@
-//api/analyze
+// app/api/analyze/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { exec } from "child_process";
 import util from "util";
+import { exec as _exec } from "child_process";
+import { getWorkingProxies, pickRandomProxy, formatProxyUrl } from "@/lib/proxy";
 
-const execPromise = util.promisify(exec);
+const exec = util.promisify(_exec);
 
 export async function POST(req: NextRequest) {
   try {
     const { url } = await req.json();
+    if (!url) return NextResponse.json({ error: "No URL provided" }, { status: 400 });
 
-    if (!url) {
-      return NextResponse.json({ error: "No URL provided" }, { status: 400 });
-    }
+    const proxies = await getWorkingProxies();
+    const proxy = pickRandomProxy(proxies);
+    const proxyArg = proxy ? `--proxy "${formatProxyUrl(proxy)}"` : "";
 
-    // Run yt-dlp to get formats
-    const { stdout } = await execPromise(
-      `yt-dlp -J "${url}"`
-    );
+    const cmd = `yt-dlp -J ${proxyArg} "${url.replace(/"/g, '\\"')}"`;
+    const timeoutSec = Number(process.env.YTDLP_TIMEOUT_SEC || 120);
+    const { stdout } = await exec(cmd, { timeout: timeoutSec * 1000 });
 
     const data = JSON.parse(stdout);
-    const formats = data.formats
-      .filter((f: any) => f.ext === "mp4" && f.height) // only mp4 with resolution
+
+    const formats = (data.formats || [])
+      .filter((f: any) => f.ext === "mp4" && f.height)
       .map((f: any) => ({
         format_id: f.format_id,
         quality: f.format_note || `${f.height}p`,
-        filesize: f.filesize,
+        filesize: f.filesize ?? null,
       }));
 
     return NextResponse.json({
       title: data.title,
       thumbnail: data.thumbnail,
       formats,
+      used_proxy: proxy ? formatProxyUrl(proxy) : null,
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || String(err) }, { status: 500 });
   }
 }
