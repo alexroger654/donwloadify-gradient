@@ -157,7 +157,7 @@ export default function InstagramDownloader() {
                 FastDL
               </h1>
             </div>
-            <nav className="hidden md:flex space-x-6">
+            <nav className="hidden md:flex space-x-6 font-semibold">
               <a href="#home" className="text-gray-600 hover:text-purple-600 transition">Home</a>
               <a href="#how-to-use" className=" text-gray-600 hover:text-purple-600 transition">How to Use</a>
               <a href="#features" className="text-gray-600 hover:text-purple-600 transition">Features</a>
