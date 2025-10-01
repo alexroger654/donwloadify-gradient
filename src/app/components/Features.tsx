@@ -1,120 +1,45 @@
-import React from 'react';
-import { Zap, Shield, Heart, Sparkles, Clock, HardDrive } from 'lucide-react';
+import React from 'react'
 
-const features = [
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Download videos in seconds with our optimized servers',
-    color: 'from-yellow-400 to-orange-500',
-    stat: '3x faster',
-  },
-  {
-    icon: Shield,
-    title: '100% Secure',
-    description: 'Your privacy is protected with encrypted connections',
-    color: 'from-green-400 to-emerald-500',
-    stat: 'SSL encrypted',
-  },
-  {
-    icon: Heart,
-    title: 'Completely Free',
-    description: 'No hidden fees, no subscriptions, forever free',
-    color: 'from-pink-400 to-red-500',
-    stat: '$0 forever',
-  },
-  {
-    icon: Sparkles,
-    title: 'HD Quality',
-    description: 'Download in original quality up to 4K resolution',
-    color: 'from-purple-400 to-indigo-500',
-    stat: 'Up to 4K',
-  },
-  {
-    icon: Clock,
-    title: '24/7 Available',
-    description: 'Our service works around the clock, anytime you need',
-    color: 'from-blue-400 to-cyan-500',
-    stat: '99.9% uptime',
-  },
-  {
-    icon: HardDrive,
-    title: 'No Limits',
-    description: 'Download unlimited videos without any restrictions',
-    color: 'from-teal-400 to-green-500',
-    stat: 'Unlimited',
-  },
-];
-
-const Features = () => {
+export default function Features() {
   return (
-    <section id="features" className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Why Choose Us?
-          </h2>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Experience the best video downloading service with these amazing features
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="backdrop-blur-xl bg-white/10 rounded-3xl p-8 hover:bg-white/15 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-white/20 hover:border-white/40 group relative overflow-hidden"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Background Glow */}
-              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity duration-500`}></div>
-              
-              {/* Icon */}
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative z-10`}>
-                <feature.icon className="w-8 h-8 text-white" />
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${feature.color} text-white`}>
-                    {feature.stat}
-                  </span>
-                </div>
-                <p className="text-white/80 leading-relaxed">{feature.description}</p>
-              </div>
-
-              {/* Hover Border Glow */}
-              <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl`}></div>
-            </div>
-          ))}
-        </div>
-
-        {/* Stats Section */}
-        <div className="mt-20 backdrop-blur-xl bg-white/10 rounded-3xl p-8 border border-white/20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">10M+</div>
-              <div className="text-white/80">Videos Downloaded</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">500K+</div>
-              <div className="text-white/80">Happy Users</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">8+</div>
-              <div className="text-white/80">Platforms Supported</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-white/80">Success Rate</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Features;
+      <section id="features" className="py-16 px-4 bg-white">
+           <div className="max-w-6xl mx-auto">
+             <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
+               Why Choose FastDL?
+             </h3>
+             <div className="grid md:grid-cols-3 gap-8">
+               <div className="text-center p-6 rounded-xl hover:shadow-lg transition">
+                 <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                   </svg>
+                 </div>
+                 <h4 className="text-xl font-semibold text-gray-800 mb-2">Lightning Fast</h4>
+                 <p className="text-gray-600">Download Instagram content in seconds with our optimized servers</p>
+               </div>
+   
+               <div className="text-center p-6 rounded-xl hover:shadow-lg transition">
+                 <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                   </svg>
+                 </div>
+                 <h4 className="text-xl font-semibold text-gray-800 mb-2">100% Safe</h4>
+                 <p className="text-gray-600">Secure and private. We don't store your data or downloaded content</p>
+               </div>
+   
+               <div className="text-center p-6 rounded-xl hover:shadow-lg transition">
+                 <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                   </svg>
+                 </div>
+                 <h4 className="text-xl font-semibold text-gray-800 mb-2">All Devices</h4>
+                 <p className="text-gray-600">Works on mobile, tablet, and desktop. Download anywhere, anytime</p>
+               </div>
+             </div>
+           </div>
+         </section>
+   
+  )
+}

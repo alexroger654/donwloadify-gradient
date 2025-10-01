@@ -511,6 +511,7 @@ export default function ProxyManager() {
                                         onChange={(e) => setNewProxy({ ...newProxy, type: e.target.value as Proxy['type'] })}
                                         className="w-full px-3 py-2 border text-gray-700 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
+                                        <option value="http">HTTP</option>
                                         <option value="https">HTTPS</option>
                                         <option value="socks4">SOCKS4</option>
                                         <option value="socks5">SOCKS5</option>
@@ -613,7 +614,7 @@ export default function ProxyManager() {
                                                         onChange={(e) => setEditingProxy({ ...editingProxy, type: e.target.value as Proxy['type'] })}
                                                         className="px-2 py-1 border border-gray-300 text-gray-900 rounded text-sm"
                                                     >
-
+                                                        <option value="http">HTTP</option>
                                                         <option value="https">HTTPS</option>
                                                         <option value="socks4">SOCKS4</option>
                                                         <option value="socks5">SOCKS5</option>

@@ -72,7 +72,7 @@ export default function AdminGoogleAds() {
   }, []);
 
   const handleSubmit = async () => {
-    if (!adUnitId || !adSlotId) {
+    if ( !adSlotId) {
       toast("Ad Unit ID and Ad Slot ID are required");
       return;
     }
@@ -211,12 +211,7 @@ export default function AdminGoogleAds() {
                     )}
 
                     <div className="space-y-2 text-xs">
-                      <div className="flex items-start gap-2">
-                        <span className="text-slate-500 font-medium min-w-[60px]">Unit ID:</span>
-                        <code className="text-slate-700 bg-slate-100 px-2 py-0.5 rounded flex-1 break-all">
-                          {ad.adUnitId}
-                        </code>
-                      </div>
+         
                       <div className="flex items-start gap-2">
                         <span className="text-slate-500 font-medium min-w-[60px]">Slot ID:</span>
                         <code className="text-slate-700 bg-slate-100 px-2 py-0.5 rounded flex-1 break-all">
@@ -297,18 +292,7 @@ export default function AdminGoogleAds() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="adUnitId" className="text-sm font-medium">
-                Ad Unit ID <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="adUnitId"
-                placeholder="ca-pub-XXXXXXXXXXXXXXXX"
-                value={adUnitId}
-                onChange={(e) => setAdUnitId(e.target.value)}
-                className="font-mono text-sm"
-              />
-            </div>
+   
 
             <div className="space-y-2">
               <Label htmlFor="adSlotId" className="text-sm font-medium">
@@ -318,7 +302,7 @@ export default function AdminGoogleAds() {
                 id="adSlotId"
                 placeholder="1234567890"
                 value={adSlotId}
-                onChange={(e) => setAdSlotId(e.target.value)}
+                onChange={(e: any) => setAdSlotId(e.target.value)}
                 className="font-mono text-sm"
               />
             </div>
@@ -331,7 +315,7 @@ export default function AdminGoogleAds() {
                 id="title"
                 placeholder="Ad title or label"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e: any) => setTitle(e.target.value)}
               />
             </div>
 
@@ -343,7 +327,7 @@ export default function AdminGoogleAds() {
                 id="description"
                 placeholder="Brief description or notes about this ad"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e: any) => setDescription(e.target.value)}
                 rows={3}
                 className="resize-none"
               />

@@ -1,5 +1,6 @@
 'use client'
-import Loading from '@/app/components/Loading';
+
+import Loading from '@/app/components/loading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect } from 'react'
