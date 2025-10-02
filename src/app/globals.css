@@ -123,3 +123,34 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+
+
+/* Remove Google default styling */
+.goog-te-gadget {
+  font-family: inherit !important;
+  font-size: 14px !important;
+  color: #333 !important;
+}
+
+.goog-te-gadget-simple {
+  background-color: #fff !important;
+  border: 1px solid #ddd !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.goog-te-gadget-simple span {
+  color: #333 !important;
+}
+
+/* Hide Google’s default icon/logo */
+.goog-te-gadget img,
+.goog-logo-link {
+  display: none !important;
+}

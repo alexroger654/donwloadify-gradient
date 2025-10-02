@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
-export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
+export async function PUT(req: Request, context: { params: any }) {
   try {
     const { id } = await context.params;
     const body = await req.json();
@@ -27,7 +27,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
   }
 }
 
-export async function DELETE(_: Request, context: { params: Promise<{ id: string }> }) {
+export async function DELETE(_: Request, context: { params: any }) {
   try {
     const { id } = await context.params;
     const client = await clientPromise;

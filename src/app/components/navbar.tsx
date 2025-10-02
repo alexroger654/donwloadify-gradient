@@ -46,6 +46,7 @@ export default function Navbar({ gradient }: { gradient: string }) {
             >
               Related Tools
             </a>
+            <div id="google_translate_element" className="ml-4"></div>
           </nav>
 
         </div>

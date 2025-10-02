@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { Video, Image, Film, TrendingUp, Tv, RotateCcw, Eye, Download, CheckCircle, Play, ClipboardIcon, XIcon, Clock, User, Heart, MessageCircle, Calendar, ChevronUp, ChevronDown } from 'lucide-react';
+import { Video, Image, Film, TrendingUp, Tv, RotateCcw, Eye, Download, CheckCircle, Play, ClipboardIcon, XIcon, Clock, User, Heart, MessageCircle, Calendar, ChevronUp, ChevronDown, FileImage } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -15,11 +15,15 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
     const [videoUrl, setVideoUrl] = useState('');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
+    const [downloadingIndex, setDownloadingIndex] = useState(null);
     const [video, setVideo] = useState<any>(null);
+    const [image, setImage] = useState<any>(null);
     const [downloading, setDownloading] = useState(false);
     const [downloadingFormatId, setDownloadingFormatId] = useState<string | null>(null);
     const [showAllComments, setShowAllComments] = useState(false);
     // const [activeTab, setActiveTab] = useState('video');
+
+    const pathname = usePathname();
 
     function removeAllAfterFirstAmpersand(url: string) {
         return url.split('&')[0];
@@ -50,10 +54,35 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
         }
     };
 
+
+
+    const analyzeInstagramImage = async (url: string) => {
+      const res = await fetch("/api/analyze-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+    
+      const data = await res.json();
+      setImage(data);
+    };
+
     const analyze = async () => {
         if (!videoUrl) return;
 
         setIsAnalyzing(true);
+
+      if(pathname?.split('/')[1]?.toLowerCase() === 'photo' || pathname?.split('/')[1]?.toLowerCase() === 'story' || pathname?.split('/')[1]?.toLowerCase() === 'carousel') {
+        try {
+          await analyzeInstagramImage(videoUrl);
+        } catch (error) {
+            console.error('Analysis failed:', error);
+            setIsAnalyzing(false);
+        } finally {
+            setIsAnalyzing(false);
+            setShowDownload(true);
+        }
+      }else{
         try {
             const url = removeAllAfterFirstAmpersand(videoUrl);
             const res = await fetch("/api/analyze", {
@@ -69,6 +98,9 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
         } finally {
             setIsAnalyzing(false);
         }
+      }
+
+  
     };
 
     const formatDuration = (seconds : number) => {
@@ -91,7 +123,24 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
       };
     
       const displayedComments =  video?.comments  ? (showAllComments ? video?.comments : video?.comments?.slice(0, 3)) : [];
+      const displayedImageComments =  image?.comments ? (showAllComments ? image?.comments : image?.comments?.slice(0, 3)) : [];
     
+      const handleDownload = async (imageUrl: string, index: number) => {
+        setDownloadingIndex(index as any);
+        
+        // Use the proxy with download param
+        const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}&download=true`;
+        
+        const link = document.createElement('a');
+        link.href = proxyUrl;
+        link.download = `image_${index + 1}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      
+        setDownloadingIndex(null);
+      };
+
 
 
     const handlePaste = async () => {
@@ -107,7 +156,7 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
         setVideoUrl("");
     };
 
-    const pathname = usePathname();
+
 
 
 
@@ -255,8 +304,164 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
                                     </span>
                                 </div>
                             </div>
-                        {!showDownload ? <></>
-                            : <>
+
+
+
+{
+  showDownload && image &&  <>
+  
+  <div className="space-y-6 mt-10">
+            {/* Post Preview Card */}
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <div className="space-y-6">
+                {/* Post Info */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center">
+                      <User className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900">@{image?.owner_username}</h3>
+                      <span className="text-sm text-gray-500">{formatDate(image?.date_utc)}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-700 text-base whitespace-pre-line">
+                    {image?.caption}
+                  </p>
+
+                  {/* Stats */}
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center gap-2 bg-red-50 border border-red-200 px-4 py-2 rounded-full">
+                      <Heart className="w-5 h-5 text-red-500" />
+                      <span className="text-gray-900 font-semibold">{image?.likes.toLocaleString()}</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full">
+                      <MessageCircle className="w-5 h-5 text-blue-500" />
+                      <span className="text-gray-900 font-semibold">{image?.comments_count}</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-purple-50 border border-purple-200 px-4 py-2 rounded-full">
+                      <FileImage className="w-5 h-5 text-purple-500" />
+                      <span className="text-gray-900 font-semibold">{image?.image_urls.length} {image?.image_urls.length === 1 ? 'Image' : 'Images'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Images Grid */}
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                <FileImage className="w-6 h-6 text-purple-600" />
+                Images
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {image?.image_urls.map((imageUrl : string, index : number) => {
+                  const isDownloadingThis = downloadingIndex === index;
+
+                  return (
+                    <div
+                      key={index}
+                      className="group relative bg-gray-50 rounded-2xl overflow-hidden border-2 border-gray-200 hover:border-purple-400 transition-all duration-300 hover:shadow-xl"
+                    >
+                      {/* Image */}
+                      <div className="aspect-square overflow-hidden">
+                        <img
+                          src={imageUrl && `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`}
+                          alt={`Image ${index + 1}`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+
+                      {/* Download Button */}
+                      <div className="p-4">
+                        <button
+                          onClick={() => handleDownload(imageUrl, index)}
+                          disabled={downloadingIndex !== null}
+                          className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
+                            isDownloadingThis
+                              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-200'
+                              : downloadingIndex !== null
+                              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                              : 'bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white hover:shadow-lg hover:scale-105'
+                          }`}
+                        >
+                          {isDownloadingThis ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                              <span>Downloading...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Download className="w-5 h-5" />
+                              <span>Download Image {index + 1}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Image Number Badge */}
+                      <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm px-3 py-1 rounded-full">
+                        <span className="text-white text-sm font-semibold">
+                          {index + 1} / {image?.image_urls.length}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Comments Section */}
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                <MessageCircle className="w-6 h-6 text-pink-600" />
+                Comments ({image?.comments.length})
+              </h3>
+              <div className="space-y-3">
+                {displayedComments.map((comment: any) => (
+                  <div
+                    key={comment.id}
+                    className="bg-gray-50 rounded-xl p-4 border border-gray-200 hover:bg-gray-100 transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="font-semibold text-gray-900">@{comment.owner_username}</span>
+                      <span className="text-xs text-gray-500">{formatTimestamp(comment.created_at_utc)}</span>
+                    </div>
+                    <p className="text-gray-700 text-sm mb-2">{comment.text}</p>
+                    <div className="flex items-center gap-1 text-gray-500">
+                      <Heart className="w-4 h-4" />
+                      <span className="text-xs">{comment.like_count}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {image?.comments?.length > 3 && (
+                <button
+                  onClick={() => setShowAllComments(!showAllComments)}
+                  className="w-full mt-4 py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-xl transition-all border-2 border-gray-300 flex items-center justify-center gap-2"
+                >
+                  {showAllComments ? (
+                    <>
+                      <ChevronUp className="w-5 h-5" />
+                      Show Less
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-5 h-5" />
+                      Show All Comments ({image?.comments?.length - 3} more)
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+  </>
+}
+
+                            
+                        {showDownload && video && <>
                           
                             
                                 <div className="space-y-8 bg-white/10 backdrop-blur-md rounded-2xl p-5 mt-10">
@@ -412,18 +617,7 @@ export default function InstagramHero({ activeTab, setActiveTab, tabs, content }
                                               </button>
                                             )}
                                           </div>
-                                
-                                          {/* Reset Button */}
-                                          {/* <button
-                                            disabled={downloading}
-                                            className={`w-full py-4 px-8 rounded-2xl font-bold text-lg transition-all duration-300 border-2 shadow-lg ${
-                                              downloading
-                                                ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed'
-                                                : 'bg-white hover:bg-gradient-to-r hover:from-purple-600 hover:via-pink-500 hover:to-orange-400 text-gray-900 hover:text-white border-gray-300 hover:border-transparent hover:scale-105 hover:shadow-xl'
-                                            }`}
-                                          >
-                                            Download Another Video
-                                          </button> */}
+       
                                         </div>
                                 </div>
                             </>

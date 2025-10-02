@@ -15,7 +15,7 @@ async function checkProxy(proxy: any) {
   }
 }
 
-export async function POST(_: Request, { params }: { params: { id: string } }) {
+export async function POST(_: Request, { params }: any) {
   try {
     const client = await clientPromise;
     const db = client.db("proxydb");
